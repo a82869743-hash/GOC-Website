@@ -115,23 +115,47 @@ export default function Home() {
         </div>
       </SectionWrapper>
 
-      {/* 3. ABOUT US (Split Layout) */}
-      <SectionWrapper className="bg-goc-dark">
+      {/* 3. BRAND AMBASSADOR — Hiten Tejwani */}
+      <SectionWrapper className="bg-goc-dark relative overflow-hidden">
+        {/* Subtle decorative background elements */}
+        <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-goc-red/[0.03] to-transparent pointer-events-none" aria-hidden="true"></div>
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-goc-red/[0.02] rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
-          <div className="relative aspect-square md:aspect-[4/5] rounded-sm overflow-hidden group">
-            <div className="absolute inset-0 bg-black/30 mix-blend-overlay z-10" aria-hidden="true"></div>
-            <Image src="/images/goc-difference.png" alt="GOC Matte Finish Transformation — Customer Satisfaction" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-1000 group-hover:scale-105" />
-            <div className="absolute top-8 left-8 bottom-8 right-8 border border-white/20 z-20 pointer-events-none" aria-hidden="true"></div>
+          {/* Image */}
+          <div className="relative aspect-[3/4] md:aspect-[4/5] rounded-sm overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" aria-hidden="true"></div>
+            <Image 
+              src="/images/hiten-tejwani-ambassador.jpeg" 
+              alt="Hiten Tejwani — Official Brand Ambassador of God of Ceramic" 
+              fill 
+              sizes="(max-width: 768px) 100vw, 50vw" 
+              className="object-cover object-top transition-transform duration-1000 group-hover:scale-105" 
+            />
+            {/* Decorative border */}
+            <div className="absolute top-6 left-6 bottom-6 right-6 border border-white/15 z-20 pointer-events-none group-hover:border-goc-red/20 transition-colors duration-700" aria-hidden="true"></div>
+            
+            {/* Name overlay at bottom of image */}
+            <div className="absolute bottom-0 left-0 right-0 z-30 p-6 sm:p-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-goc-red/10 border border-goc-red/30 backdrop-blur-md mb-3">
+                <span className="w-2 h-2 rounded-full bg-goc-red animate-pulse"></span>
+                <span className="text-goc-red text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]">Official Brand Ambassador</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-wider drop-shadow-lg">Hiten Tejwani</h3>
+            </div>
           </div>
           
+          {/* Text Content */}
           <div>
-            <p className="text-goc-red font-bold tracking-[0.3em] uppercase text-sm mb-4">The Standard</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider text-white mb-6 sm:mb-8">Refusing To Compromise</h2>
+            <p className="text-goc-red font-bold tracking-[0.3em] uppercase text-sm mb-4">The Face of Excellence</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider text-white mb-6 sm:mb-8">
+              Hiten Tejwani
+            </h2>
             <p className="text-gray-300 mb-6 leading-relaxed text-lg">
-              At God of Ceramic, we don&apos;t just wash cars. We orchestrate a symphony of restoration, protection, and unparalleled shine. Born from a passion for automotive excellence, our studio treats every vehicle like a masterpiece.
+              We are proud to announce <span className="text-white font-semibold">Hiten Tejwani</span> as the Official Brand Ambassador of God of Ceramic. A name synonymous with trust, style, and excellence — perfectly reflecting our brand&apos;s commitment to absolute perfection.
             </p>
             <p className="text-gray-400 mb-10 leading-relaxed">
-              Using only the world&apos;s most advanced ceramic coatings and self-healing protective films, we lock in perfection. Your vehicle is an investment; we are its ultimate defense.
+              When you demand nothing but the best for your vehicle, you trust the best. With Hiten Tejwani championing our vision, God of Ceramic continues to set the gold standard in automotive care and protection across India.
             </p>
             <Link href="/about" className="px-8 py-3 bg-white text-black font-bold uppercase tracking-wider text-sm hover:bg-goc-red hover:text-white transition-colors duration-300 inline-block">
               Our Story
