@@ -179,7 +179,7 @@ export default function PackagesPage() {
                 {ppfPackages.map((pkg, i) => (
                   <div
                     key={i}
-                    className={`relative px-3 py-5 sm:p-6 rounded-sm text-center transition-all duration-500 group ${
+                    className={`relative flex flex-col items-center px-3 py-5 sm:p-6 rounded-sm text-center transition-all duration-500 group ${
                       pkg.popular
                         ? 'bg-gradient-to-b from-goc-red/20 to-goc-red/5 border-2 border-goc-red/60 shadow-[0_0_30px_rgba(255,30,30,0.15)]'
                         : 'bg-goc-dark/60 border border-white/10 hover:border-goc-red/30'
@@ -191,7 +191,7 @@ export default function PackagesPage() {
                       </div>
                     )}
                     <p className="text-white font-bold uppercase tracking-wider text-xs sm:text-sm mb-3 sm:mb-4">{pkg.name}</p>
-                    <p className={`w-full flex justify-center items-center text-lg sm:text-2xl md:text-3xl font-black whitespace-nowrap ${pkg.popular ? 'text-goc-red' : 'text-white'}`}>{pkg.price}</p>
+                    <p className={`mt-auto text-lg sm:text-2xl md:text-3xl font-black whitespace-nowrap ${pkg.popular ? 'text-goc-red' : 'text-white'}`}>{pkg.price}</p>
                   </div>
                 ))}
               </div>
