@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0A0A0A;
+  --foreground: #ffffff;
+  /* iOS safe area insets */
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-outfit), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent pull-to-refresh on mobile */
+  overscroll-behavior-y: none;
+}
+
+/* Fix for iOS momentum scrolling */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure images never overflow their containers */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Better touch targets on mobile */
+@media (max-width: 768px) {
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text overflow on small screens */
+  h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+}
+
+/* Safe area padding for iPhones with notch/dynamic island */
+@supports (padding: env(safe-area-inset-bottom)) {
+  footer {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.font-sans {
+  font-family: var(--font-outfit), sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), serif;
+}
+
+.glass-nav {
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 30, 30, 0);
+  transition: border-color 0.3s ease;
+}
+
+.glass-nav.scrolled {
+  border-bottom: 1px solid rgba(255, 30, 30, 0.5);
+}
+
+/* ---- Before/After Shine Sweep ---- */
+.shine-sweep {
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  @apply animate-shineSwipe;
+}
