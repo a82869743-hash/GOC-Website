@@ -191,7 +191,7 @@ export default function PackagesPage() {
                       </div>
                     )}
                     <p className="text-white font-bold uppercase tracking-wider text-xs sm:text-sm mb-3 sm:mb-4">{pkg.name}</p>
-                    <p className={`text-lg sm:text-2xl md:text-3xl font-black whitespace-nowrap ${pkg.popular ? 'text-goc-red' : 'text-white'}`}>{pkg.price}</p>
+                    <p className={`w-full flex justify-center items-center text-lg sm:text-2xl md:text-3xl font-black whitespace-nowrap ${pkg.popular ? 'text-goc-red' : 'text-white'}`}>{pkg.price}</p>
                   </div>
                 ))}
               </div>
