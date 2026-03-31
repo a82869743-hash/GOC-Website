@@ -39,7 +39,7 @@ interface BeforeAfterSectionProps {
 }
 
 export default function BeforeAfterSection({ 
-  whatsappUrl = "https://wa.me/919727713480?text=Hi%2C%20I%20want%20car%20detailing%20service" 
+  whatsappUrl = "https://wa.me/919925566886?text=Hi%2C%20I%20want%20car%20detailing%20service" 
 }: BeforeAfterSectionProps = {}) {
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderInView = useInView(headerRef, { once: true, margin: "-80px" });

@@ -55,7 +55,7 @@ export default function ContactPage() {
                 <Phone className="text-goc-red w-8 h-8 mr-6 shrink-0" />
                 <div>
                   <h3 className="text-white font-bold uppercase tracking-wider mb-2">Phone</h3>
-                  <p className="text-gray-400 leading-relaxed"><a href="tel:+919727713480" className="hover:text-goc-red transition-colors">+91 97277 13480</a></p>
+                  <p className="text-gray-400 leading-relaxed"><a href="tel:+919925566886" className="hover:text-goc-red transition-colors">+91 99255 66886</a></p>
                 </div>
               </div>
               

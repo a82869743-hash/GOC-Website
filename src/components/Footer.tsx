@@ -45,7 +45,7 @@ export default function Footer() {
                 <Youtube size={18} />
               </a>
               <a 
-                href="https://wa.me/919727713480?text=Hi!%20I'm%20interested%20in%20detailing%20services%20for%20my%20car." 
+                href="https://wa.me/919925566886?text=Hi!%20I'm%20interested%20in%20detailing%20services%20for%20my%20car." 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-10 h-10 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#25D366]/10 hover:border-[#25D366]/40 hover:text-[#25D366] transition-all duration-300 active:scale-95"
@@ -111,9 +111,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+919727713480" className="flex items-center gap-3 text-gray-500 text-sm hover:text-white transition-colors duration-300 active:text-goc-red py-1">
+                <a href="tel:+919925566886" className="flex items-center gap-3 text-gray-500 text-sm hover:text-white transition-colors duration-300 active:text-goc-red py-1">
                   <Phone className="text-goc-red w-4 h-4 shrink-0" />
-                  +91 97277 13480
+                  +91 99255 66886
                 </a>
               </li>
               <li>
@@ -149,7 +149,7 @@ export default function Footer() {
                 <ArrowUpRight size={14} />
               </Link>
               <a 
-                href="https://wa.me/919727713480?text=Hi!%20I'm%20interested%20in%20detailing%20services%20for%20my%20car." 
+                href="https://wa.me/919925566886?text=Hi!%20I'm%20interested%20in%20detailing%20services%20for%20my%20car." 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] text-xs font-bold uppercase tracking-wider hover:bg-[#25D366] hover:text-white transition-all duration-300 rounded-sm text-center active:scale-95"

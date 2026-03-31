@@ -53,7 +53,7 @@ export default function ContactCTASection() {
                   <h3 className="text-white font-bold uppercase tracking-wider text-lg mb-2">Book on WhatsApp</h3>
                   <p className="text-gray-400 text-sm mb-4">Instant response. Send us a message and we&apos;ll get back to you right away.</p>
                   <a
-                    href="https://wa.me/919727713480?text=Hi%2C%20I%20want%20car%20detailing%20service"
+                    href="https://wa.me/919925566886?text=Hi%2C%20I%20want%20car%20detailing%20service"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white font-bold uppercase tracking-wider text-xs rounded-sm hover:bg-[#20BD5A] transition-colors duration-300 shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:shadow-[0_0_30px_rgba(37,211,102,0.4)]"
@@ -117,9 +117,9 @@ export default function ContactCTASection() {
 
             {/* Contact Details */}
             <div className="flex flex-wrap gap-6 pt-4">
-              <a href="tel:+919727713480" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
+              <a href="tel:+919925566886" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
                 <Phone className="w-4 h-4 text-goc-red" />
-                +91 97277 13480
+                +91 99255 66886
               </a>
               <a href="mailto:info@godofceramic.com" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
                 <Mail className="w-4 h-4 text-goc-red" />

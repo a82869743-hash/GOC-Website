@@ -80,8 +80,8 @@ export default function ServiceDetail({ params }: PageProps) {
             <Link href="/book" className="px-6 sm:px-8 py-3 bg-goc-red text-white font-bold uppercase tracking-wider text-xs sm:text-sm hover:scale-105 transition-transform active:scale-95">
               Book This Service
             </Link>
-            <a href="tel:+919727713480" className="flex items-center gap-2 text-gray-300 hover:text-goc-red transition-colors text-sm">
-              <Phone size={16} /> +91 97277 13480
+            <a href="tel:+919925566886" className="flex items-center gap-2 text-gray-300 hover:text-goc-red transition-colors text-sm">
+              <Phone size={16} /> +91 99255 66886
             </a>
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function ServiceDetail({ params }: PageProps) {
               Reserve Your Spot
             </Link>
             <a 
-              href="https://wa.me/919727713480?text=Hi!%20I'm%20interested%20in%20your%20services." 
+              href="https://wa.me/919925566886?text=Hi!%20I'm%20interested%20in%20your%20services." 
               target="_blank" 
               rel="noopener noreferrer"
               className="px-10 py-5 border border-white/20 text-white text-lg font-bold uppercase tracking-wider hover:border-goc-red hover:text-goc-red transition-colors duration-300 inline-flex items-center gap-3"

@@ -197,7 +197,7 @@ export default function PackagesPage() {
               </div>
 
               <Link
-                href="https://wa.me/919328823089?text=Hi,%20I%20am%20interested%20in%20PPF%20packages"
+                href="https://wa.me/919925566886?text=Hi,%20I%20am%20interested%20in%20PPF%20packages"
                 target="_blank"
                 className="group relative mt-8 w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-goc-red to-[#B30000] text-white font-bold uppercase tracking-[0.2em] text-xs overflow-hidden rounded-sm shadow-[0_0_30px_rgba(255,30,30,0.2)] hover:shadow-[0_0_50px_rgba(255,30,30,0.4)] transition-all duration-500"
               >
@@ -254,7 +254,7 @@ export default function PackagesPage() {
               </div>
 
               <Link
-                href="https://wa.me/919328823089?text=Hi,%20I%20am%20interested%20in%20Ceramic%20Coating%20packages"
+                href="https://wa.me/919925566886?text=Hi,%20I%20am%20interested%20in%20Ceramic%20Coating%20packages"
                 target="_blank"
                 className="group relative mt-6 w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-goc-red to-[#B30000] text-white font-bold uppercase tracking-[0.2em] text-xs overflow-hidden rounded-sm shadow-[0_0_30px_rgba(255,30,30,0.2)] hover:shadow-[0_0_50px_rgba(255,30,30,0.4)] transition-all duration-500"
               >
@@ -375,7 +375,7 @@ export default function PackagesPage() {
               </div>
 
               <Link
-                href="https://wa.me/919328823089?text=Hi,%20I%20am%20interested%20in%20Graphene%20Coating%20packages"
+                href="https://wa.me/919925566886?text=Hi,%20I%20am%20interested%20in%20Graphene%20Coating%20packages"
                 target="_blank"
                 className="group relative mt-6 w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-goc-red to-[#B30000] text-white font-bold uppercase tracking-[0.2em] text-xs overflow-hidden rounded-sm shadow-[0_0_30px_rgba(255,30,30,0.2)] hover:shadow-[0_0_50px_rgba(255,30,30,0.4)] transition-all duration-500"
               >
@@ -421,7 +421,7 @@ export default function PackagesPage() {
             </div>
 
             <Link
-              href="https://wa.me/919328823089?text=Hi,%20I%20am%20interested%20in%20the%20Free%20Ceramic%20Coating%20with%20PPF%20offer"
+              href="https://wa.me/919925566886?text=Hi,%20I%20am%20interested%20in%20the%20Free%20Ceramic%20Coating%20with%20PPF%20offer"
               target="_blank"
               className="group relative inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-goc-red to-[#B30000] text-white font-bold uppercase tracking-[0.2em] text-sm overflow-hidden rounded-sm shadow-[0_0_30px_rgba(255,30,30,0.3)] hover:shadow-[0_0_50px_rgba(255,30,30,0.5)] transition-all duration-500"
             >
@@ -492,7 +492,7 @@ export default function PackagesPage() {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
-              href="https://wa.me/919328823089?text=Hi,%20I%20want%20to%20book%20a%20service"
+              href="https://wa.me/919925566886?text=Hi,%20I%20want%20to%20book%20a%20service"
               target="_blank"
               className="group relative inline-flex items-center justify-center px-10 py-5 bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366] text-[#25D366] hover:text-white font-bold uppercase tracking-[0.2em] text-sm overflow-hidden rounded-sm transition-all duration-500 shadow-[0_0_20px_rgba(37,211,102,0.1)] hover:shadow-[0_0_30px_rgba(37,211,102,0.3)]"
             >
@@ -502,12 +502,12 @@ export default function PackagesPage() {
             </Link>
 
             <Link
-              href="tel:+919259009526"
+              href="tel:+919925566886"
               className="group relative inline-flex items-center justify-center px-10 py-5 bg-black/40 border border-white/10 hover:border-goc-red/60 backdrop-blur-md overflow-hidden text-white font-bold uppercase tracking-[0.2em] text-sm transition-all duration-700 rounded-sm"
             >
               <div className="absolute w-full h-[1px] bottom-0 left-0 bg-gradient-to-r from-transparent via-goc-red/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <span className="relative z-10 flex items-center gap-3 group-hover:text-goc-red transition-colors duration-500">
-                <Phone size={16} /> Call: 99259 09526
+                <Phone size={16} /> Call: 99255 66886
               </span>
             </Link>
           </div>

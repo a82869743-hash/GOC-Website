@@ -502,7 +502,7 @@ export default function AboutPage() {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
-              href="https://wa.me/919328823089?text=Hi,%20I%20want%20to%20know%20more%20about%20your%20services"
+              href="https://wa.me/919925566886?text=Hi,%20I%20want%20to%20know%20more%20about%20your%20services"
               target="_blank"
               className="group relative inline-flex items-center justify-center px-10 py-5 bg-[#25D366]/10 border border-[#25D366]/30 hover:bg-[#25D366] text-[#25D366] hover:text-white font-bold uppercase tracking-[0.2em] text-sm overflow-hidden rounded-sm transition-all duration-500 shadow-[0_0_20px_rgba(37,211,102,0.1)] hover:shadow-[0_0_30px_rgba(37,211,102,0.3)]"
             >
