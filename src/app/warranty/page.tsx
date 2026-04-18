@@ -1,9 +1,11 @@
 'use client';
 
 import SectionWrapper from '@/components/SectionWrapper';
-import { Shield, FileCheck, Clock, AlertCircle } from 'lucide-react';
-import { useState, FormEvent } from 'react';
+import { Shield, FileCheck, Clock, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { useState, useRef, FormEvent } from 'react';
 import Image from 'next/image';
+
+// ─── Static Data ────────────────────────────────────────────────
 
 const coverageItems = [
   'Ceramic Coating Defects',
@@ -37,16 +39,77 @@ const warrantyInfo = [
   },
 ];
 
-export default function WarrantyPage() {
-  const [submitted, setSubmitted] = useState(false);
+// ─── Types ──────────────────────────────────────────────────────
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+interface FormStatus {
+  type: 'idle' | 'loading' | 'success' | 'error';
+  message: string;
+}
+
+// ─── Component ──────────────────────────────────────────────────
+
+export default function WarrantyPage() {
+  const [status, setStatus] = useState<FormStatus>({ type: 'idle', message: '' });
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+
     // Honeypot anti-bot check
     if (formData.get('company')) return;
-    setSubmitted(true);
+
+    // Set loading state
+    setStatus({ type: 'loading', message: 'Submitting your warranty claim...' });
+
+    // Build JSON payload
+    const payload = {
+      fullName: formData.get('fullName') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      warrantyId: formData.get('warrantyId') as string,
+      vehicleDetails: formData.get('vehicleDetails') as string,
+      serviceDate: formData.get('serviceDate') as string,
+      serviceType: formData.get('serviceType') as string,
+      issue: formData.get('issueDescription') as string,
+      company: formData.get('company') as string || '', // honeypot
+    };
+
+    try {
+      const response = await fetch('/api/warranty', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setStatus({
+          type: 'success',
+          message: data.message || 'Warranty claim submitted successfully!',
+        });
+        // Reset form
+        formRef.current?.reset();
+        // Scroll to top
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
+      } else {
+        setStatus({
+          type: 'error',
+          message: data.error || 'Something went wrong. Please try again.',
+        });
+      }
+    } catch {
+      setStatus({
+        type: 'error',
+        message: 'Network error. Please check your connection and try again.',
+      });
+    }
   };
+
+  const isLoading = status.type === 'loading';
 
   return (
     <main className="min-h-screen bg-goc-dark">
@@ -105,21 +168,55 @@ export default function WarrantyPage() {
             <h2 className="text-goc-red font-bold tracking-[0.3em] uppercase text-sm mb-4">Submit Claim</h2>
             <h3 className="text-4xl md:text-5xl font-black uppercase tracking-wider text-white mb-10">Warranty Claim Form</h3>
 
-            {submitted ? (
-              <div className="bg-carbon border border-goc-red/30 p-12 text-center">
-                <Shield className="w-16 h-16 text-goc-red mx-auto mb-6" />
-                <h4 className="text-2xl font-bold text-white uppercase tracking-wider mb-4">Claim Submitted</h4>
-                <p className="text-gray-400 max-w-md mx-auto">
-                  Your warranty claim has been received. Our team will review your submission and contact you within 48 hours with next steps.
-                </p>
+            {status.type === 'success' ? (
+              <div className="bg-carbon border border-green-500/40 p-12 text-center rounded-sm">
+                <div className="flex justify-center mb-6">
+                  <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+                    <CheckCircle2 className="w-10 h-10 text-green-500" />
+                  </div>
+                </div>
+                <h4 className="text-3xl font-bold text-white uppercase tracking-wider mb-4">Claim Submitted</h4>
+                <p className="text-gray-400 mb-8 max-w-md mx-auto">{status.message}</p>
+                <button
+                  onClick={() => setStatus({ type: 'idle', message: '' })}
+                  className="text-goc-red font-bold uppercase tracking-widest border-b border-goc-red pb-1 hover:text-white transition-colors"
+                >
+                  Submit Another Claim
+                </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative">
+                {/* Loading Overlay */}
+                {isLoading && (
+                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-sm">
+                    <Loader2 className="w-10 h-10 text-goc-red animate-spin mb-4" />
+                    <p className="text-white font-bold uppercase tracking-wider text-sm">Submitting your claim...</p>
+                  </div>
+                )}
+
+                {/* Error Banner */}
+                {status.type === 'error' && (
+                  <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-sm">
+                    <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-red-300 font-semibold text-sm">{status.message}</p>
+                      <button
+                        type="button"
+                        onClick={() => setStatus({ type: 'idle', message: '' })}
+                        className="text-red-400/60 text-xs mt-1 hover:text-red-300 transition-colors"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* Honeypot field — hidden from users, catches bots */}
                 <div className="absolute opacity-0 pointer-events-none" aria-hidden="true" tabIndex={-1}>
                   <label htmlFor="company">Leave this empty</label>
                   <input type="text" id="company" name="company" tabIndex={-1} autoComplete="off" />
                 </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-gray-400 text-xs uppercase tracking-wider font-bold mb-2">Full Name *</label>
@@ -129,7 +226,8 @@ export default function WarrantyPage() {
                       required
                       maxLength={100}
                       autoComplete="name"
-                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600"
+                      disabled={isLoading}
+                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600 disabled:opacity-50"
                       placeholder="John Doe"
                     />
                   </div>
@@ -141,7 +239,8 @@ export default function WarrantyPage() {
                       required
                       maxLength={254}
                       autoComplete="email"
-                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600"
+                      disabled={isLoading}
+                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600 disabled:opacity-50"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -158,7 +257,8 @@ export default function WarrantyPage() {
                       pattern="[+0-9\s]+"
                       inputMode="tel"
                       autoComplete="tel"
-                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600"
+                      disabled={isLoading}
+                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600 disabled:opacity-50"
                       placeholder="+91 98765 43210"
                     />
                   </div>
@@ -170,7 +270,8 @@ export default function WarrantyPage() {
                       required
                       maxLength={20}
                       pattern="GOC-[A-Za-z0-9-]+"
-                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600"
+                      disabled={isLoading}
+                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600 disabled:opacity-50"
                       placeholder="GOC-XXXX-XXXX"
                     />
                   </div>
@@ -184,7 +285,8 @@ export default function WarrantyPage() {
                       name="vehicleDetails"
                       required
                       maxLength={150}
-                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600"
+                      disabled={isLoading}
+                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 placeholder:text-gray-600 disabled:opacity-50"
                       placeholder="e.g. BMW X5 2024 / Dining Table"
                     />
                   </div>
@@ -194,7 +296,8 @@ export default function WarrantyPage() {
                       type="date"
                       name="serviceDate"
                       required
-                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300"
+                      disabled={isLoading}
+                      className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 disabled:opacity-50"
                     />
                   </div>
                 </div>
@@ -204,15 +307,16 @@ export default function WarrantyPage() {
                   <select
                     name="serviceType"
                     required
-                    className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300"
+                    disabled={isLoading}
+                    className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 disabled:opacity-50"
                   >
                     <option value="">Select service type</option>
-                    <option value="ceramic">Ceramic Coating</option>
-                    <option value="ppf">Paint Protection Film (PPF)</option>
-                    <option value="furniture-ppf">Furniture</option>
-                    <option value="interior">Interior Detailing</option>
-                    <option value="paint-correction">Paint Correction</option>
-                    <option value="other">Other</option>
+                    <option value="Ceramic Coating">Ceramic Coating</option>
+                    <option value="Paint Protection Film (PPF)">Paint Protection Film (PPF)</option>
+                    <option value="Furniture PPF">Furniture</option>
+                    <option value="Interior Detailing">Interior Detailing</option>
+                    <option value="Paint Correction">Paint Correction</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -223,16 +327,25 @@ export default function WarrantyPage() {
                     required
                     rows={5}
                     maxLength={2000}
-                    className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 resize-none placeholder:text-gray-600"
+                    disabled={isLoading}
+                    className="w-full bg-carbon border border-white/10 focus:border-goc-red/50 text-white px-4 py-3 outline-none transition-colors duration-300 resize-none placeholder:text-gray-600 disabled:opacity-50"
                     placeholder="Please describe the issue in detail..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full md:w-auto px-10 py-4 bg-goc-button text-white font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(255,30,30,0.3)] hover:shadow-[0_0_25px_rgba(255,30,30,0.5)]"
+                  disabled={isLoading}
+                  className="w-full md:w-auto px-10 py-4 bg-goc-button text-white font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:scale-[1.02] shadow-[0_0_15px_rgba(255,30,30,0.3)] hover:shadow-[0_0_25px_rgba(255,30,30,0.5)] disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-3"
                 >
-                  Submit Warranty Claim
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit Warranty Claim'
+                  )}
                 </button>
               </form>
             )}

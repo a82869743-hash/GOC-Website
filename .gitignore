@@ -27,6 +27,9 @@ yarn-error.log*
 .env
 .env*.local
 
+# Google Service Account credentials (NEVER commit this)
+credentials.json
+
 # vercel
 .vercel
 
