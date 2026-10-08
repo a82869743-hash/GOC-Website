@@ -67,6 +67,7 @@ export default function Footer() {
                 { href: '/services', label: 'Services' },
                 { href: '/furniture-ppf', label: 'Furniture' },
                 { href: '/packages', label: 'Packages' },
+                { href: '/blog', label: 'Blog & Guides' },
                 { href: '/franchise', label: 'Franchise' },
                 { href: '/branches', label: 'Auto Wolf' },
                 { href: '/gallery', label: 'Gallery' },

@@ -1,28 +1,18 @@
-"use client";
+'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
 import { MapPin, Phone, Mail, ArrowRight, Navigation, MessageCircle } from 'lucide-react';
 
 export default function ContactCTASection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
   return (
-    <section className="py-24 md:py-32 relative overflow-hidden bg-goc-dark">
+    <section className="py-20 md:py-28 relative overflow-hidden bg-goc-dark border-t border-white/5">
       {/* Animated background effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,30,30,0.06),transparent_60%)]" aria-hidden="true" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,240,255,0.04),transparent_50%)]" aria-hidden="true" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-goc-red/30 to-transparent" aria-hidden="true" />
 
-      <div ref={sectionRef} className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <p className="text-goc-red font-bold tracking-[0.3em] uppercase text-sm mb-4">Get In Touch</p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-wider text-white mb-4">
             Ready for <span className="text-goc-red">Perfection?</span>
@@ -30,18 +20,13 @@ export default function ContactCTASection() {
           <p className="text-gray-400 max-w-xl mx-auto text-lg">
             Your vehicle deserves the ultimate protection. Reach out to us today.
           </p>
-        </motion.div>
+        </div>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
           {/* Left: CTA Cards */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="space-y-6"
-          >
+          <div className="space-y-6">
             {/* WhatsApp CTA Card */}
             <div className="group relative p-8 rounded-sm border border-[#25D366]/20 bg-[#25D366]/5 backdrop-blur-sm overflow-hidden hover:border-[#25D366]/40 transition-all duration-500 hover:shadow-[0_0_40px_rgba(37,211,102,0.1)]">
               <div className="absolute inset-0 bg-gradient-to-br from-[#25D366]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
@@ -126,17 +111,11 @@ export default function ContactCTASection() {
                 info@godofceramic.com
               </a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right: Embedded Map */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="relative"
-          >
+          <div className="relative">
             <div className="relative h-full min-h-[400px] lg:min-h-0 rounded-sm overflow-hidden border border-white/10 group hover:border-goc-red/20 transition-all duration-500">
-              {/* Map */}
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.712041704016!2d73.16065977775922!3d22.288895290976388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395fc7e2bab69f59%3A0xc31da58599fe88e0!2sGod%20Of%20Ceramic!5e0!3m2!1sen!2sus!4v1774040896474!5m2!1sen!2sus"
                 width="100%"
@@ -151,7 +130,6 @@ export default function ContactCTASection() {
               />
               <div className="absolute inset-0 bg-black/10 pointer-events-none group-hover:opacity-0 transition-opacity duration-500" aria-hidden="true" />
 
-              {/* Map overlay badge */}
               <div className="absolute bottom-4 left-4 z-10">
                 <div className="flex items-center gap-2 px-4 py-2 bg-black/70 backdrop-blur-sm rounded-sm border border-white/10">
                   <MapPin className="w-4 h-4 text-goc-red" />
@@ -160,9 +138,8 @@ export default function ContactCTASection() {
               </div>
             </div>
 
-            {/* Decorative glow */}
             <div className="absolute -inset-1 bg-gradient-to-r from-goc-red/10 via-transparent to-goc-neon/10 rounded-sm blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" aria-hidden="true" />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

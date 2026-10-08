@@ -1,14 +1,8 @@
-"use client";
+'use client';
 
-import dynamic from 'next/dynamic';
+import BeforeAfterSlider from './BeforeAfterSlider';
 import Link from 'next/link';
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
-
-const BeforeAfterSlider = dynamic(() => import('./BeforeAfterSlider'), {
-  loading: () => <div className="aspect-[4/3] bg-carbon animate-pulse rounded-sm border border-white/5" />,
-});
 
 const showcaseItems = [
   {
@@ -41,9 +35,6 @@ interface BeforeAfterSectionProps {
 export default function BeforeAfterSection({ 
   whatsappUrl = "https://wa.me/919925566886?text=Hi%2C%20I%20want%20car%20detailing%20service" 
 }: BeforeAfterSectionProps = {}) {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const isHeaderInView = useInView(headerRef, { once: true, margin: "-80px" });
-
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-[#050505] border-y border-white/5">
       {/* Background accent */}
@@ -52,13 +43,7 @@ export default function BeforeAfterSection({
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <motion.div
-          ref={headerRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16 md:mb-20"
-        >
+        <div className="text-center mb-16 md:mb-20">
           <div className="inline-flex items-center gap-2 mb-4">
             <Sparkles className="w-4 h-4 text-goc-neon" />
             <p className="text-goc-red font-bold tracking-[0.3em] uppercase text-sm">Transformations</p>
@@ -71,7 +56,7 @@ export default function BeforeAfterSection({
             Drag the slider to reveal stunning before & after transformations. Every detail matters.
           </p>
           <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-goc-red to-transparent mx-auto mt-6" aria-hidden="true" />
-        </motion.div>
+        </div>
 
         {/* Slider Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -81,13 +66,7 @@ export default function BeforeAfterSection({
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12 md:mt-16"
-        >
+        <div className="text-center mt-12 md:mt-16">
           <Link
             href={whatsappUrl}
             target="_blank"
@@ -98,7 +77,7 @@ export default function BeforeAfterSection({
             <span className="relative z-10">Get This Finish</span>
             <ArrowRight size={18} className="relative z-10 group-hover:translate-x-2 transition-transform duration-300" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

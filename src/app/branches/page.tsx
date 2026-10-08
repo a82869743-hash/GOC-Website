@@ -1,16 +1,10 @@
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, MapPin, Phone, Clock, Sparkles, Shield, Droplets, Wrench } from 'lucide-react';
 import SectionWrapper from '@/components/SectionWrapper';
 
-const BeforeAfterSection = dynamic(() => import('@/components/BeforeAfterSection'), {
-  loading: () => <div className="h-96 flex items-center justify-center"><p className="text-gray-500 uppercase tracking-wider text-sm">Loading showcase...</p></div>,
-});
-
-const AutoWolfInstagramFeed = dynamic(() => import('@/components/AutoWolfInstagramFeed'), {
-  loading: () => <div className="h-64 flex items-center justify-center"><p className="text-gray-500 uppercase tracking-wider text-sm">Loading feed...</p></div>,
-});
+import BeforeAfterSection from '@/components/BeforeAfterSection';
+import AutoWolfInstagramFeed from '@/components/AutoWolfInstagramFeed';
 
 const autoWolfPosts = [
   { href: "https://www.instagram.com/p/DTSWDD0CojZ/?igsh=eGl4MDhpeTJuaTl1", src: "/images/ig/auto-fixed-1.jpg" },

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion';
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -16,7 +15,6 @@ export default function BeforeAfterSlider({ beforeImage, afterImage, beforeAlt, 
   const [sliderPos, setSliderPos] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
   const updateSliderPos = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -42,12 +40,9 @@ export default function BeforeAfterSlider({ beforeImage, afterImage, beforeAlt, 
   }, []);
 
   return (
-    <motion.div
+    <div
       ref={containerRef}
-      initial={{ opacity: 0, scale: 0.95, y: 40 }}
-      animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-white/10 cursor-col-resize select-none hover:border-goc-red/30 transition-border-color duration-500 touch-none"
+      className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-white/10 cursor-col-resize select-none hover:border-goc-red/30 transition-all duration-500 touch-none opacity-100"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -123,6 +118,6 @@ export default function BeforeAfterSlider({ beforeImage, afterImage, beforeAlt, 
 
       {/* Hover glow */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,30,30,0.05),transparent_70%)]" aria-hidden="true" />
-    </motion.div>
+    </div>
   );
 }

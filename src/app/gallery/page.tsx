@@ -1,14 +1,11 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useState } from 'react';
 import SectionWrapper from '@/components/SectionWrapper';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 
-const BeforeAfterSection = dynamic(() => import('@/components/BeforeAfterSection'), {
-  loading: () => <div className="h-96 bg-carbon border-y border-white/5 flex items-center justify-center"><p className="text-gray-500 uppercase tracking-wider text-sm">Loading transformations...</p></div>,
-});
+import BeforeAfterSection from '@/components/BeforeAfterSection';
 
 // Gallery items — replace src paths with your actual images later
 const galleryItems = [

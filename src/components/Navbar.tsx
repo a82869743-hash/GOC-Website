@@ -22,8 +22,10 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
+    { name: '3D Studio', path: '/ppf-studio' },
     { name: 'Furniture', path: '/furniture-ppf' },
     { name: 'Packages', path: '/packages' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Franchise', path: '/franchise' },
     { name: 'Auto Wolf', path: '/branches' },
     { name: 'Gallery', path: '/gallery' },

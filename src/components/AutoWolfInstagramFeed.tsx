@@ -2,7 +2,6 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 export interface InstagramPost {
@@ -11,9 +10,9 @@ export interface InstagramPost {
 }
 
 const defaultInstagramPosts: InstagramPost[] = [
-  { href: "https://www.instagram.com/p/DNai6y3K9in/?igsh=MWY0NGVremsxZm1lcA==", src: "https://www.instagram.com/p/DNai6y3K9in/media/?size=l" },
-  { href: "https://www.instagram.com/p/DPVW-DAD22L/?igsh=MXJ3NXZ6MnplNHlzYg==", src: "https://www.instagram.com/p/DPVW-DAD22L/media/?size=l" },
-  { href: "https://www.instagram.com/p/DQa4a2FgfeH/?igsh=M29rd2g5djlmeGc1", src: "https://www.instagram.com/p/DQa4a2FgfeH/media/?size=l" },
+  { href: "https://www.instagram.com/godofceramic?igsh=YWZqYWd4MDN3MDJr", src: "/images/ig/default1.jpg" },
+  { href: "https://www.instagram.com/godofceramic?igsh=YWZqYWd4MDN3MDJr", src: "/images/ig/default2.jpg" },
+  { href: "https://www.instagram.com/godofceramic?igsh=YWZqYWd4MDN3MDJr", src: "/images/ig/default3.jpg" },
 ];
 
 interface InstagramFeedProps {
@@ -28,18 +27,14 @@ export default function AutoWolfInstagramFeed({
   instagramHandle = "@GodOfCeramic"
 }: InstagramFeedProps = {}) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   return (
     <section className="py-24 relative overflow-hidden bg-[#050505] border-t border-white/5 pb-0">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
         {/* Header */}
-        <motion.div
+        <div
           ref={sectionRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
           className="mb-12 text-center"
         >
           <p className="text-goc-red font-bold tracking-[0.3em] uppercase text-sm mb-4">Follow The Journey</p>
@@ -53,23 +48,19 @@ export default function AutoWolfInstagramFeed({
             <h2 className="text-4xl md:text-5xl font-black uppercase tracking-wider text-white hover:text-goc-red transition-colors mb-2">{instagramHandle}</h2>
           </a>
           <p className="text-gray-500 text-sm">See our latest work on Instagram</p>
-        </motion.div>
+        </div>
 
         {/* Instagram Posts Grid */}
         <div className="pb-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
             {posts.map((post, i) => (
-              <motion.a
+              <a
                 key={i}
                 href={post.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group block"
                 aria-label={`View Instagram post ${i + 1}`}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
               >
                 <div className="relative aspect-[4/5] bg-[#050505] overflow-hidden transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(255,30,30,0.1)]">
                   <div className="relative w-full h-full bg-transparent">
@@ -86,7 +77,7 @@ export default function AutoWolfInstagramFeed({
                     <span className="px-4 py-2 bg-black/60 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider rounded-sm border border-white/20">View Post</span>
                   </div>
                 </div>
-              </motion.a>
+              </a>
             ))}
           </div>
 
