@@ -18,7 +18,8 @@ import {
   Check, 
   Camera,
   Compass,
-  RefreshCw
+  RefreshCw,
+  X
 } from 'lucide-react';
 
 export interface PPFColourOption {
@@ -210,7 +211,7 @@ interface CameraAngle {
 const CAMERA_ANGLES: CameraAngle[] = [
   { id: 'hero-34', label: 'Front 3/4', azimuth: 38, elevation: 14, distance: 7.6 },
   { id: 'profile', label: 'Side Profile', azimuth: 90, elevation: 10, distance: 8.2 },
-  { id: 'grille', label: 'Pantheon Grille', azimuth: 0, elevation: 8, distance: 5.6 },
+  { id: 'grille', label: 'Pantheon Grille', azimuth: 0, elevation: 17, distance: 5.4 },
   { id: 'rear-34', label: 'Rear 3/4', azimuth: 145, elevation: 16, distance: 7.8 },
   { id: 'birds-eye', label: 'Aerial Roof', azimuth: 45, elevation: 48, distance: 8.6 },
 ];
@@ -258,6 +259,7 @@ export default function RollsRoycePPFStudio() {
   const scratchMeshRef = useRef<THREE.Mesh | null>(null);
   const waterDropletsGroupRef = useRef<THREE.Group | null>(null);
   const requestRef = useRef<number | null>(null);
+  const healIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Sync React state to refs
   useEffect(() => {
@@ -275,6 +277,14 @@ export default function RollsRoycePPFStudio() {
   useEffect(() => {
     dualToneRef.current = dualTone;
   }, [dualTone]);
+
+  const showWaterBeadingRef = useRef<boolean>(false);
+  useEffect(() => {
+    showWaterBeadingRef.current = showWaterBeading;
+    if (waterDropletsGroupRef.current) {
+      waterDropletsGroupRef.current.visible = showWaterBeading;
+    }
+  }, [showWaterBeading]);
 
   const filteredColours = useMemo(() => {
     return activeCategory === 'all' 
@@ -633,59 +643,118 @@ export default function RollsRoycePPFStudio() {
 
           carGroup.add(model);
 
-          // 8. SELF-HEALING SCRATCH SIMULATION DECAL (Hood placement)
+          // 8. SELF-HEALING SCRATCH SIMULATION DECAL (Hood surface placement)
           const scratchCanvas = document.createElement('canvas');
-          scratchCanvas.width = 256;
-          scratchCanvas.height = 256;
-          const scratchCtx = scratchCanvas.getContext('2d');
-          if (scratchCtx) {
-            scratchCtx.fillStyle = 'rgba(0,0,0,0)';
-            scratchCtx.fillRect(0, 0, 256, 256);
-            scratchCtx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
-            scratchCtx.lineWidth = 3.0;
-            scratchCtx.beginPath();
-            scratchCtx.moveTo(25, 95);
-            scratchCtx.lineTo(235, 135);
-            scratchCtx.moveTo(45, 125);
-            scratchCtx.lineTo(215, 185);
-            scratchCtx.moveTo(55, 65);
-            scratchCtx.lineTo(195, 105);
-            scratchCtx.stroke();
+          scratchCanvas.width = 512;
+          scratchCanvas.height = 512;
+          const sCtx = scratchCanvas.getContext('2d');
+          if (sCtx) {
+            sCtx.clearRect(0, 0, 512, 512);
+
+            const drawScratch = (x1: number, y1: number, x2: number, y2: number, w: number) => {
+              // Dark fracture trench (stands out boldly on white, silver, grey paints)
+              sCtx.strokeStyle = 'rgba(15, 17, 24, 0.92)';
+              sCtx.lineWidth = w + 1.8;
+              sCtx.lineCap = 'round';
+              sCtx.beginPath();
+              sCtx.moveTo(x1, y1);
+              const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * 6;
+              const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * 6;
+              sCtx.quadraticCurveTo(midX, midY, x2, y2);
+              sCtx.stroke();
+
+              // Bright specular refraction edge (stands out on dark, black, and colored paints)
+              sCtx.strokeStyle = 'rgba(255, 255, 255, 0.98)';
+              sCtx.lineWidth = Math.max(1.2, w - 0.3);
+              sCtx.beginPath();
+              sCtx.moveTo(x1 + 1, y1 - 1);
+              sCtx.quadraticCurveTo(midX + 1, midY - 1, x2 + 1, y2 - 1);
+              sCtx.stroke();
+            };
+
+            // Prominent key scratches & abrasions across the bonnet
+            drawScratch(50, 200, 460, 280, 3.6);
+            drawScratch(70, 280, 430, 400, 3.2);
+            drawScratch(110, 140, 390, 220, 2.8);
+
+            // Crossing swirl marks
+            drawScratch(130, 320, 320, 420, 2.2);
+            drawScratch(200, 110, 380, 180, 2.0);
+            drawScratch(220, 240, 460, 310, 2.5);
+            drawScratch(80, 360, 260, 440, 2.0);
           }
           const scratchTexture = new THREE.CanvasTexture(scratchCanvas);
           const scratchMat = new THREE.MeshBasicMaterial({
             map: scratchTexture,
             transparent: true,
             opacity: 0,
+            depthTest: true,
             depthWrite: false,
+            polygonOffset: true,
+            polygonOffsetFactor: -4,
+            polygonOffsetUnits: -4,
           });
-          const scratchPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 1.1), scratchMat);
-          scratchPlane.rotation.x = -Math.PI / 2.05;
-          scratchPlane.position.set(0, 0.96, 1.2);
+          const scratchPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 1.1), scratchMat);
+          scratchPlane.rotation.x = -Math.PI / 2 - 0.08;
+          scratchPlane.position.set(0, 1.040, 1.76);
+          scratchPlane.renderOrder = 999;
           scratchMeshRef.current = scratchPlane;
           carGroup.add(scratchPlane);
 
-          // 9. WATER DROPLETS LOTUS EFFECT (Hood placement)
+          // 9. WATER DROPLETS LOTUS EFFECT (Hood surface placement via raycasting)
           const waterGroup = new THREE.Group();
+          waterGroup.renderOrder = 1000;
           waterDropletsGroupRef.current = waterGroup;
+
+          // Droplet material: crystal water with gleaming specular highlights
           const dropletMat = new THREE.MeshPhysicalMaterial({
-            color: 0xffffff,
-            transmission: 0.95,
+            color: 0xd8eeff,
             roughness: 0.02,
+            metalness: 0.08,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.01,
             transparent: true,
-            opacity: 0.9,
-            envMapIntensity: 1.8,
+            opacity: 0.94,
+            envMapIntensity: 3.5,
           });
-          const dropGeom = new THREE.SphereGeometry(0.025, 8, 8);
-          for (let d = 0; d < 40; d++) {
-            const drop = new THREE.Mesh(dropGeom, dropletMat);
-            const randX = (Math.random() - 0.5) * 1.1;
-            const randZ = 0.8 + Math.random() * 0.9;
-            drop.position.set(randX, 0.97, randZ);
-            drop.scale.y = 0.45;
+
+          // Find exact main hood mesh for raycasting
+          let hoodMesh: THREE.Mesh | null = null;
+          model.traverse((child) => {
+            if ((child as THREE.Mesh).isMesh && child.name === 'rrghost_hood_rrghost_paint_b_0') {
+              hoodMesh = child as THREE.Mesh;
+            }
+          });
+
+          const raycaster = new THREE.Raycaster();
+          const sphereGeom = new THREE.SphereGeometry(1, 12, 12);
+
+          // Generate 75 glistening water droplets across the hood
+          for (let d = 0; d < 75; d++) {
+            const rx = (Math.random() - 0.5) * 1.06;
+            const rz = 1.36 + Math.random() * 0.86;
+
+            let hitY = 1.077 - (rz - 1.2) * 0.078 - (rx * rx) * 0.08;
+
+            if (hoodMesh) {
+              raycaster.set(new THREE.Vector3(rx, 2.5, rz), new THREE.Vector3(0, -1, 0));
+              const hits = raycaster.intersectObject(hoodMesh, true);
+              if (hits.length > 0) {
+                hitY = hits[0].point.y;
+              }
+            }
+
+            let radius = 0.022;
+            if (d < 18) radius = 0.038; // Large showpiece beads
+            else if (d < 45) radius = 0.026; // Medium droplets
+            else radius = 0.016; // Fine droplets
+
+            const drop = new THREE.Mesh(sphereGeom, dropletMat);
+            drop.scale.set(radius, radius * 0.72, radius); // Hydrophobic contact dome
+            drop.position.set(rx, hitY + radius * 0.68, rz);
             waterGroup.add(drop);
           }
-          waterGroup.visible = false;
+          waterGroup.visible = showWaterBeadingRef.current;
           carGroup.add(waterGroup);
 
           setLoadingProgress(100);
@@ -769,6 +838,7 @@ export default function RollsRoycePPFStudio() {
       return () => {
         isDisposed = true;
         if (requestRef.current) cancelAnimationFrame(requestRef.current);
+        if (healIntervalRef.current) clearInterval(healIntervalRef.current);
         window.removeEventListener('resize', handleResize);
         
         if (envRenderTarget) envRenderTarget.dispose();
@@ -842,11 +912,32 @@ export default function RollsRoycePPFStudio() {
     targetDistanceRef.current = Math.max(4.2, Math.min(11.0, targetDistanceRef.current));
   };
 
-  // Self-Healing Demo Trigger
+  // Cleanly stop / exit the scratch healing demo
+  const stopScratchSim = useCallback(() => {
+    if (healIntervalRef.current) {
+      clearInterval(healIntervalRef.current);
+      healIntervalRef.current = null;
+    }
+    setIsHealingInProgress(false);
+    setIsScratchSimActive(false);
+    setScratchSeverity(0);
+    if (scratchMeshRef.current) {
+      (scratchMeshRef.current.material as THREE.MeshBasicMaterial).opacity = 0;
+    }
+  }, []);
+
+  // Self-Healing Demo Trigger (Toggle)
   const triggerScratchSim = () => {
+    if (isScratchSimActive) {
+      stopScratchSim();
+      return;
+    }
     setIsScratchSimActive(true);
     setAutoRotate(false);
-    setCameraToAngle(CAMERA_ANGLES[2]); // Pantheon Grille / Hood angle
+    // Smooth camera glide to hood close-up
+    targetAzimuthRef.current = 15 * (Math.PI / 180);
+    targetElevationRef.current = 22 * (Math.PI / 180);
+    targetDistanceRef.current = 5.0;
     setScratchSeverity(100);
 
     if (scratchMeshRef.current) {
@@ -855,11 +946,14 @@ export default function RollsRoycePPFStudio() {
   };
 
   const triggerHeatHealing = () => {
+    if (isHealingInProgress || scratchSeverity === 0) return;
     setIsHealingInProgress(true);
 
     let progress = 100;
-    const healInterval = setInterval(() => {
-      progress -= 4;
+    if (healIntervalRef.current) clearInterval(healIntervalRef.current);
+
+    healIntervalRef.current = setInterval(() => {
+      progress -= 3;
       setScratchSeverity(Math.max(0, progress));
 
       if (scratchMeshRef.current) {
@@ -867,22 +961,28 @@ export default function RollsRoycePPFStudio() {
       }
 
       if (progress <= 0) {
-        clearInterval(healInterval);
+        if (healIntervalRef.current) clearInterval(healIntervalRef.current);
+        healIntervalRef.current = null;
         setIsHealingInProgress(false);
-        setTimeout(() => {
-          setIsScratchSimActive(false);
-        }, 1200);
       }
-    }, 40);
+    }, 35);
   };
 
-  // Water Beading Toggle
+  // Water Beading Toggle (Lotus Effect)
   const toggleWaterBeading = () => {
-    const nextState = !showWaterBeading;
-    setShowWaterBeading(nextState);
-    if (waterDropletsGroupRef.current) {
-      waterDropletsGroupRef.current.visible = nextState;
-    }
+    setShowWaterBeading((prev) => {
+      const nextState = !prev;
+      if (waterDropletsGroupRef.current) {
+        waterDropletsGroupRef.current.visible = nextState;
+      }
+      if (nextState) {
+        // Tilt camera slightly up so beads are in full view
+        if (currentElevationRef.current < 17 * (Math.PI / 180)) {
+          targetElevationRef.current = 19 * (Math.PI / 180);
+        }
+      }
+      return nextState;
+    });
   };
 
   return (
@@ -1044,24 +1144,36 @@ export default function RollsRoycePPFStudio() {
               </p>
 
               <div className="flex items-center gap-2">
+                {scratchSeverity === 0 ? (
+                  <button
+                    onClick={() => {
+                      setScratchSeverity(100);
+                      if (scratchMeshRef.current) {
+                        (scratchMeshRef.current.material as THREE.MeshBasicMaterial).opacity = 0.95;
+                      }
+                    }}
+                    className="flex-1 py-2 px-3 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-sm transition-all flex items-center justify-center gap-1.5 border border-white/20"
+                  >
+                    <RefreshCw size={13} />
+                    Scratch Again
+                  </button>
+                ) : (
+                  <button
+                    disabled={isHealingInProgress}
+                    onClick={triggerHeatHealing}
+                    className="flex-1 py-2 px-3 bg-goc-button text-white text-xs font-bold uppercase tracking-wider rounded-sm disabled:opacity-50 hover:scale-[1.02] transition-transform flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(255,30,30,0.4)]"
+                  >
+                    <Flame size={13} />
+                    {isHealingInProgress ? 'Applying Heat (60°C)...' : 'Apply Heat to Heal'}
+                  </button>
+                )}
                 <button
-                  disabled={isHealingInProgress || scratchSeverity === 0}
-                  onClick={triggerHeatHealing}
-                  className="flex-1 py-2 px-3 bg-goc-button text-white text-xs font-bold uppercase tracking-wider rounded-sm disabled:opacity-50 hover:scale-[1.02] transition-transform flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(255,30,30,0.4)]"
+                  onClick={stopScratchSim}
+                  className="py-2 px-3 bg-red-600/20 hover:bg-red-600/40 border border-red-500/50 hover:border-red-500 text-red-200 hover:text-white text-xs font-bold uppercase tracking-wider rounded-sm transition-all flex items-center gap-1"
+                  title="Stop Self-Healing Demo"
                 >
-                  <Flame size={13} />
-                  {isHealingInProgress ? 'Applying Heat (60°C)...' : 'Apply Heat to Heal'}
-                </button>
-                <button
-                  onClick={() => {
-                    setIsScratchSimActive(false);
-                    if (scratchMeshRef.current) {
-                      (scratchMeshRef.current.material as THREE.MeshBasicMaterial).opacity = 0;
-                    }
-                  }}
-                  className="py-2 px-3 bg-white/10 text-gray-300 text-xs font-bold uppercase tracking-wider rounded-sm hover:text-white"
-                >
-                  Close
+                  <X size={13} />
+                  Stop Demo
                 </button>
               </div>
             </div>
@@ -1100,28 +1212,41 @@ export default function RollsRoycePPFStudio() {
               <span>{dualTone ? 'Two-Tone Active' : 'Two-Tone Off'}</span>
             </button>
 
-            {/* Self-Healing Trigger */}
+            {/* Self-Healing Trigger (Start / Stop) */}
             <button
               onClick={triggerScratchSim}
-              className="px-3 py-1.5 rounded-sm text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border border-goc-red/40 bg-goc-red/20 text-white hover:bg-goc-red hover:border-goc-red transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(255,30,30,0.25)]"
-              title="Simulate bonnet scratch and heat self-healing"
+              className={`px-3 py-1.5 rounded-sm text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border transition-all flex items-center gap-1.5 ${
+                isScratchSimActive
+                  ? 'bg-red-600 text-white border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.5)] animate-pulse'
+                  : 'border-goc-red/40 bg-goc-red/20 text-white hover:bg-goc-red hover:border-goc-red shadow-[0_0_15px_rgba(255,30,30,0.25)]'
+              }`}
+              title={isScratchSimActive ? 'Stop and exit self-healing scratch simulation' : 'Simulate bonnet scratch and heat self-healing'}
             >
-              <Flame size={13} className="text-goc-red group-hover:text-white" />
-              <span>Self-Healing Demo</span>
+              {isScratchSimActive ? (
+                <>
+                  <X size={13} className="text-white" />
+                  <span>Stop Healing Demo</span>
+                </>
+              ) : (
+                <>
+                  <Flame size={13} className="text-goc-red" />
+                  <span>Self-Healing Demo</span>
+                </>
+              )}
             </button>
 
-            {/* Hydrophobic Lotus Effect */}
+            {/* Hydrophobic Lotus Effect Toggle */}
             <button
               onClick={toggleWaterBeading}
               className={`px-3 py-1.5 rounded-sm text-[11px] font-bold uppercase tracking-wider backdrop-blur-md border transition-all flex items-center gap-1.5 ${
                 showWaterBeading
-                  ? 'bg-blue-600/90 text-white border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.4)]'
+                  ? 'bg-blue-600 text-white border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.5)]'
                   : 'bg-black/75 text-gray-300 border-white/15 hover:border-white/30'
               }`}
-              title="Toggle Hydrophobic Lotus Water Droplets"
+              title="Toggle Hydrophobic Lotus Water Droplets on Bonnet"
             >
               <Droplets size={13} className={showWaterBeading ? 'text-white' : 'text-blue-400'} />
-              <span className="hidden sm:inline">Lotus Effect</span>
+              <span>{showWaterBeading ? 'Lotus Effect (Active)' : 'Lotus Effect'}</span>
             </button>
           </div>
         </div>
