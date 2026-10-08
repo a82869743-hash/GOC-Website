@@ -104,7 +104,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
         {/* DNS prefetch & preconnect for third-party domains */}
         <link rel="dns-prefetch" href="https://www.youtube.com" />

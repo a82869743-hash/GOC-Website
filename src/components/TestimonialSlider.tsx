@@ -131,20 +131,34 @@ export default function TestimonialSlider() {
     };
   }, [checkScroll]);
 
-  /* ── Auto-scroll ──────────────────────────────────────────────── */
+  /* ── Auto-scroll (Viewport-Aware) ────────────────────────────── */
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+
+    let isVisible = true;
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+      }, { threshold: 0.1 });
+      observer.observe(el);
+    }
+
     const timer = setInterval(() => {
-      if (isDragging) return;
+      if (isDragging || !isVisible || document.hidden) return;
       const cardWidth = 380; // approximate card + gap
       if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 2) {
         el.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
         el.scrollBy({ left: cardWidth, behavior: 'smooth' });
       }
-    }, 4500);
-    return () => clearInterval(timer);
+    }, 5000);
+
+    return () => {
+      clearInterval(timer);
+      if (observer) observer.disconnect();
+    };
   }, [isDragging]);
 
   /* ── Drag-to-scroll (mouse) ───────────────────────────────────── */

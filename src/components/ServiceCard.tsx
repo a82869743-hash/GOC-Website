@@ -12,10 +12,11 @@ export default function ServiceCard({ service, index = 0 }: ServiceCardProps) {
   return (
     <Link 
       href={`/services/${service.slug}`}
-      className="group relative block bg-carbon rounded-sm overflow-hidden border border-white/5 hover:border-white/20 transition-transform duration-300 hover:-translate-y-2"
+      className="group relative block bg-carbon rounded-sm overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-700 hover:-translate-y-3"
+      style={{ animationDelay: `${index * 150}ms` }}
     >
       {/* Top accent line */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-goc-red to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-20"></div>
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-goc-red to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 z-20"></div>
 
       {/* Image Section */}
       <div className="relative h-72 w-full overflow-hidden">
@@ -25,7 +26,7 @@ export default function ServiceCard({ service, index = 0 }: ServiceCardProps) {
           alt={service.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500 ease-out"
+          className="object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000 ease-out"
           loading="lazy"
         />
         

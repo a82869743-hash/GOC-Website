@@ -779,14 +779,32 @@ export default function RollsRoycePPFStudio() {
       );
 
       // ==========================================
-      // SMOOTH 60 FPS ANIMATION LOOP
+      // VIEWPORT-AWARE 60 FPS ANIMATION LOOP (Zero GPU waste off-screen)
       // ==========================================
       let lastTime = performance.now();
+      let isVisibleOnScreen = true;
+      let isPageVisible = typeof document !== 'undefined' ? !document.hidden : true;
+
+      const stopAnimation = () => {
+        if (requestRef.current) {
+          cancelAnimationFrame(requestRef.current);
+          requestRef.current = null;
+        }
+      };
+
+      const startAnimation = () => {
+        if (isDisposed || requestRef.current || !isVisibleOnScreen || !isPageVisible) return;
+        lastTime = performance.now();
+        requestRef.current = requestAnimationFrame(animate);
+      };
 
       const animate = () => {
-        if (isDisposed) return;
+        if (isDisposed || !isVisibleOnScreen || !isPageVisible) {
+          requestRef.current = null;
+          return;
+        }
         const now = performance.now();
-        const delta = (now - lastTime) / 1000;
+        const delta = Math.min(0.1, (now - lastTime) / 1000);
         lastTime = now;
 
         // Auto-rotate turntable when active and not dragging
@@ -818,7 +836,37 @@ export default function RollsRoycePPFStudio() {
         requestRef.current = requestAnimationFrame(animate);
       };
 
-      requestRef.current = requestAnimationFrame(animate);
+      // Visibility change handler (tab minimize/switch)
+      const handleVisibilityChange = () => {
+        isPageVisible = !document.hidden;
+        if (isPageVisible && isVisibleOnScreen) {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      // IntersectionObserver (pauses WebGL renderer when off-screen)
+      let observer: IntersectionObserver | null = null;
+      if (typeof IntersectionObserver !== 'undefined' && host) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            const entry = entries[0];
+            isVisibleOnScreen = entry.isIntersecting;
+            if (isVisibleOnScreen && isPageVisible) {
+              startAnimation();
+            } else {
+              stopAnimation();
+            }
+          },
+          { threshold: 0.05, rootMargin: '100px' }
+        );
+        observer.observe(host);
+      }
+
+      // Initial start
+      startAnimation();
 
       // Responsive window resize handler
       const handleResize = () => {
@@ -837,8 +885,10 @@ export default function RollsRoycePPFStudio() {
       // ==========================================
       return () => {
         isDisposed = true;
-        if (requestRef.current) cancelAnimationFrame(requestRef.current);
+        stopAnimation();
         if (healIntervalRef.current) clearInterval(healIntervalRef.current);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        if (observer) observer.disconnect();
         window.removeEventListener('resize', handleResize);
         
         if (envRenderTarget) envRenderTarget.dispose();

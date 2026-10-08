@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function PPFStudioPage() {
   return (
     <main className="min-h-screen bg-[#070708] pt-20">
-      <RollsRoyceStudioSection autoLoad={true} />
+      <RollsRoyceStudioSection immediate={true} />
     </main>
   );
 }
