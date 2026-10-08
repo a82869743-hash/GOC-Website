@@ -12,7 +12,6 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -23,13 +22,6 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent pull-to-refresh on mobile */
-  overscroll-behavior-y: none;
-}
-
-/* Fix for iOS momentum scrolling */
-* {
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Ensure images never overflow their containers */
