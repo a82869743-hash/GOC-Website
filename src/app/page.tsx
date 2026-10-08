@@ -16,7 +16,6 @@ import BeforeAfterSection from '@/components/BeforeAfterSection';
 import InstagramFeedComponent from '@/components/InstagramFeedComponent';
 import ContactCTASection from '@/components/ContactCTASection';
 import HeroSection from '@/components/HeroSection';
-import YouTubeVideoCard from '@/components/YouTubeVideoCard';
 
 export default function Home() {
   return (
@@ -167,8 +166,23 @@ export default function Home() {
               { id: 'rqVtPYUW8bI', title: 'Premium Ceramic Coating Process' },
               { id: 'ztzcBp8IjzE', title: 'PPF Installation Masterclass' },
               { id: '9RpjsBGf6pk', title: 'Full Detail Transformation' },
-            ].map((video) => (
-              <YouTubeVideoCard key={video.id} id={video.id} title={video.title} />
+            ].map((video, i) => (
+              <div key={i} className="snap-center shrink-0 w-[85vw] md:w-[560px] group">
+                <div className="relative aspect-video bg-carbon border border-white/5 group-hover:border-goc-red/30 rounded-sm overflow-hidden transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(255,30,30,0.1)]">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${video.id}?rel=0`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full"
+                  ></iframe>
+                </div>
+                <p className="mt-4 text-white font-bold uppercase tracking-wider text-sm group-hover:text-goc-red transition-colors">{video.title}</p>
+              </div>
             ))}
           </div>
 

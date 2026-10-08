@@ -52,7 +52,7 @@ export default function HeroSection() {
       className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black" 
       aria-label="Hero"
     >
-      {/* Hardware-Accelerated Video Background */}
+      {/* Video Background */}
       <video 
         ref={videoRef}
         autoPlay 
@@ -60,15 +60,14 @@ export default function HeroSection() {
         loop 
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover transform-gpu will-change-transform"
+        className="absolute inset-0 w-full h-full object-cover scale-[1.02] filter brightness-75"
       >
         <source src="/videos/car2.mp4" type="video/mp4" />
       </video>
       
-      {/* Pure Alpha Direct-Composited Luxury Overlays (Zero GPU overhead, eliminates lag) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-[#0A0A0A] pointer-events-none" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#180000]/80 via-transparent to-transparent pointer-events-none" aria-hidden="true" />
-      <div className="absolute inset-0 bg-black/20 pointer-events-none" aria-hidden="true" />
+      {/* Original Dark & Deep Contrast Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#140000]/90 mix-blend-multiply pointer-events-none" aria-hidden="true" />
+      <div className="absolute inset-0 bg-goc-dark opacity-30 mix-blend-overlay pointer-events-none" aria-hidden="true" />
       
       {/* Content Container */}
       <div className="relative z-10 text-center px-4 w-full flex flex-col items-center">
